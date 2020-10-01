@@ -28,11 +28,11 @@ epasts=$(echo $line | awk -F, '{print $5'})
 #day=01
 #month=07
 #year=2013
-#mape="/home/Users/$grupa/"
-#mkdir $mape$login
+mape="/home/Users/$grupa/"
+mkdir $mape$login
 #pievieno lietotaju, komentāru, konta slegsanas datumu, grupu 
 #adduser "$login" -g "$grupa" -p "$parolecrypt" -d "$mape$login" -c "$vards $epasts" -e "$year-$month-$day"
-adduser $login --ingroup "$grupa" --gecos "$vards,,,,$epasts" --disabled-password
+adduser $login --ingroup "$grupa" --gecos "$vards,,,,$epasts" --home $mape$login" --disabled-password
 echo "$login:$parole" | chpasswd
 echo -ne "$parolecrypt\n$parolecrypt\n" | smbpasswd -a -s $login
 chown -R "$login":users "$mape$login"
