@@ -37,10 +37,10 @@ echo -ne "$parole\n$parole\n" | smbpasswd -a -s $login
 chown -R "$login":users "$mape$login"
 chmod -R 0700 "$mape$login"
 #passwd -u $login
-usermod -p $parolecrypt $login
+#usermod -p $parolecrypt $login
 #echo $parole | passwd $login
 #ekrana zinojums
-echo "useradd $login -c $vards $epasts -e $year-$month-$day -G $grupa"
+#echo "useradd $login -c $vards $epasts -e $year-$month-$day -G $grupa"
 #nesuta userim e-pastu
 done
 else
