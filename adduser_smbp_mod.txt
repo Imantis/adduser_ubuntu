@@ -31,7 +31,7 @@ year=2013
 mape="/home/Users/$grupa/"
 mkdir $mape$login
 #pievieno lietotaju, komentāru, konta slegsanas datumu, grupu 
-adduser $login --ingroup "$grupa" --gecos "$vards,,,,$epasts" --home $mape$login" --disabled-password
+adduser $login --ingroup "$grupa" --gecos "$vards,,,,$epasts" --home "$mape$login" --disabled-password
 echo "$login:$parole" | chpasswd
 echo -ne "$parole\n$parole\n" | smbpasswd -a -s $login
 chown -R "$login":users "$mape$login"
