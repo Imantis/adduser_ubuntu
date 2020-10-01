@@ -1,0 +1,46 @@
+#!/bin/bash
+echo "Ievadi CSV faila nosaukumu"
+#parbauda vai ir fails
+read CSVFILE
+if [ -f $CSVFILE ]
+then
+exec < $CSVFILE
+#pilda pa rindām
+while
+read line
+do
+#panem vardu un uzvardu no csv 1. kolonnas
+vards=$(echo $line | awk -F, '{print $1'})
+#panem loginvardu no csv 2. kolonnas
+login=$(echo $line | awk -F, '{print $2'})
+#panem paroli no csv 3. kolonnas
+parole=$(echo $line | awk -F, '{print $3'})
+#parolecrypt=`echo $parole | mkpasswd -s`
+echo $parole > /home/igbe/pwd
+parolecrypt=`mkpasswd -s < /home/igbe/pwd`
+#panem grupu1 no csv 4. kolonnas (maziem burtiem jabut, piem. studentia)
+grupa=$(echo $line | awk -F, '{print $4'})
+#panem e-pastu no csv 5. kolonnas
+epasts=$(echo $line | awk -F, '{print $5'})
+#panem otru grupu no csv 6. kolonnas
+#grupa2=$(echo $line | awk -F, '{print $6'})
+#konta blokesanas datums !!!!!!!!!!!!!!SALIKT atbilstoso!!!!!!!!!!!!!!!!!!!!!!!!
+day=01
+month=07
+year=2013
+mape="/home/Users/$grupa/"
+mkdir $mape$login
+#pievieno lietotaju, komentāru, konta slegsanas datumu, grupu 
+useradd "$login" -g "$grupa" -p "$parolecrypt" -d "$mape$login" -c "$vards $epasts" -e "$year-$month-$day"
+chown -R "$login":users "$mape$login"
+chmod -R 0700 "$mape$login"
+#passwd -u $login
+usermod -p $parolecrypt $login
+#echo $parole | passwd $login
+#ekrana zinojums
+echo "useradd $login -c $vards $epasts -e $year-$month-$day -G $grupa"
+#nesuta userim e-pastu
+done
+else
+echo "Nav atrasts CSV fails"
+fi

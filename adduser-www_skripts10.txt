@@ -1,0 +1,42 @@
+#!/bin/bash
+echo "Ievadi CSV faila nosaukumu"
+#parbauda vai ir fails
+read CSVFILE
+if [ -f $CSVFILE ]
+then
+exec < $CSVFILE
+#pilda pa rindām
+while
+read line
+do
+#panem vardu un uzvardu no csv 1. kolonnas
+vards=$(echo $line | awk -F, '{print $1'})
+#panem loginvardu no csv 2. kolonnas
+login=$(echo $line | awk -F, '{print $2'})
+#panem paroli no csv 3. kolonnas
+parole=$(echo $line | awk -F, '{print $3'})
+#panem grupu1 no csv 4. kolonnas (maziem burtiem jabut, piem. studentia)
+grupa=$(echo $line | awk -F, '{print $4'})
+#panem e-pastu no csv 5. kolonnas
+epasts=$(echo $line | awk -F, '{print $5'})
+#panem otru folderi no csv 6. kolonnas
+folderis=$(echo $line | awk -F, '{print $6'})
+#konta blokesanas datums !!!!!!!!!!!!!!SALIKT atbilstoso!!!!!!!!!!!!!!!!!!!!!!!!
+day=01
+month=07
+year=2013
+mape="/var/www/"
+mkdir $mape$folderis
+#pievieno lietotaju, komentāru, konta slegsanas datumu, grupu 
+useradd "$login" -g "$grupa" -p "$parole" -d "$mape$folderis" -c "$vards $epasts" -e "$year-$month-$day"
+chown -R "$login":"$grupa" "$mape$folderis"
+chmod -R 0700 "$mape$folderis"
+#passwd -u $login
+#echo $parole | passwd $login
+#ekrana zinojums
+echo "useradd $login -c $vards $epasts -e $year-$month-$day -G $grupa"
+#nesuta userim e-pastu
+done
+else
+echo "Nav atrasts CSV fails"
+fi
