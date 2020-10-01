@@ -25,25 +25,24 @@ epasts=$(echo $line | awk -F, '{print $5'})
 #panem otru grupu no csv 6. kolonnas
 #grupa2=$(echo $line | awk -F, '{print $6'})
 #konta blokesanas datums !!!!!!!!!!!!!!SALIKT atbilstoso!!!!!!!!!!!!!!!!!!!!!!!!
-#day=01
-#month=07
-#year=2013
+day=01
+month=07
+year=2013
 mape="/home/Users/$grupa/"
 mkdir $mape$login
 #pievieno lietotaju, komentāru, konta slegsanas datumu, grupu 
-#adduser "$login" -g "$grupa" -p "$parolecrypt" -d "$mape$login" -c "$vards $epasts" -e "$year-$month-$day"
 adduser $login --ingroup "$grupa" --gecos "$vards,,,,$epasts" --home $mape$login" --disabled-password
 echo "$login:$parole" | chpasswd
-echo -ne "$parolecrypt\n$parolecrypt\n" | smbpasswd -a -s $login
+echo -ne "$parole\n$parole\n" | smbpasswd -a -s $login
 chown -R "$login":users "$mape$login"
 chmod -R 0700 "$mape$login"
 #passwd -u $login
 usermod -p $parolecrypt $login
 #echo $parole | passwd $login
 #ekrana zinojums
-echo "adduser $login"
+echo "useradd $login -c $vards $epasts -e $year-$month-$day -G $grupa"
 #nesuta userim e-pastu
 done
 else
-#echo "Nav atrasts CSV fails"
+echo "Nav atrasts CSV fails"
 fi
