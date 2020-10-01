@@ -45,5 +45,5 @@ echo "adduser $login"
 #nesuta userim e-pastu
 done
 else
-echo "Nav atrasts CSV fails"
+#echo "Nav atrasts CSV fails"
 fi
