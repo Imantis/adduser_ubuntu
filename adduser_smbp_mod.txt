@@ -41,7 +41,7 @@ chmod -R 0700 "$mape$login"
 usermod -p $parolecrypt $login
 #echo $parole | passwd $login
 #ekrana zinojums
-echo "adduser $login -c $vards $epasts -e $year-$month-$day -G $grupa"
+echo "adduser $login"
 #nesuta userim e-pastu
 done
 else
